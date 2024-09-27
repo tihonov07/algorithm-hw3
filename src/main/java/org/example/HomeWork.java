@@ -1,6 +1,8 @@
 package org.example;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class HomeWork {
@@ -24,10 +26,25 @@ public class HomeWork {
      * Сигнатуру метода не меняем
      */
     public String findMaxSubstring(String str) {
-        //TODO реализовать метод
-        return null;
+        String result = "";
+        var set = new LinkedHashSet<String>();
+        for (int i = 0; i < str.length(); i++) {
+            var c = String.valueOf(str.charAt(i));
+            if (!set.add(c)) {
+                result = maxSize(result, set);
+                set.clear();
+                set.add(c);
+            }
+        }
+        return maxSize(result, set);
     }
 
+    private String maxSize(String s1, Set<String> s2) {
+        if (s2.size() > s1.length()) {
+            return String.join("", s2);
+        }
+        return s1;
+    }
 
     /**
      * Задача со зведочкой (опционально)
@@ -40,7 +57,13 @@ public class HomeWork {
      * @see <a href="https://www.codewars.com/kata/545cedaa9943f7fe7b000048">https://www.codewars.com/kata/545cedaa9943f7fe7b000048</a>
      */
     public boolean check(String sentence){
-        return false;
+        var set = sentence.toLowerCase().chars().boxed().collect(Collectors.toSet());
+        for (int i = 'a'; i <= 'z'; i++) {
+            if (set.add(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
